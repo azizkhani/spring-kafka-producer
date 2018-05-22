@@ -7,6 +7,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,10 @@ public class UserResource {
         User user = new User(username, "Baharan", 1000L);
         //kafkaTemplate.send(TOPIC, user);
         Message<User> message = MessageBuilder.withPayload(user).setHeader(KafkaHeaders.TOPIC,TOPIC).build();
-        kafkaTemplate.send(message);
+        //kafkaTemplate.send(message);
+
+        kafkaTemplate.send(new GenericMessage<>(user));
+
         return username;
     }
 }
